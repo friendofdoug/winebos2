@@ -1,149 +1,49 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Boston Wine Events</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    nav a { margin-right: 12px; }
-    mark { background: #ffeb88; padding: 0 2px; border-radius: 3px; }
-    .controls { display:flex; gap:8px; flex-wrap:wrap; align-items:center }
-    .muted small { opacity: .9 }
-  </style>
-</head>
-<body>
-  <header>
-    <h1 style="margin:0">Boston Wine Events</h1>
-    <nav class="muted" style="margin-top:4px">
-      <a href="index.html">List</a>
-      <a href="map.html">Map</a>
-      <a href="rss.xml">RSS</a>
-      <a href="events.ics">ICS</a>
-      <a href="submit.html">Submit</a>
-    </nav>
-    <div class="muted" id="meta" style="margin-top:8px"></div>
-  </header>
-
-  <section class="controls" style="margin-top:12px;">
-    <input id="q" placeholder="Search title, venue, or tag…" />
-    <input id="from" type="date" />
-    <input id="to" type="date" />
-    <select id="neighborhood">
-      <option value="">All neighborhoods</option>
-      <option>Harvard Square</option>
-      <option>Cambridge</option>
-      <option>Brighton</option>
-      <option>Back Bay</option>
-      <option>North End</option>
-      <option>Somerville</option>
-    </select>
-    <select id="type">
-      <option value="">Any type</option>
-      <option>tasting</option>
-      <option>class</option>
-      <option>dinner</option>
-      <option>sparkling</option>
-      <option>burgundy</option>
-      <option>italy</option>
-      <option>france</option>
-      <option>spain</option>
-      <option>natural wine</option>
-    </select>
-    <label class="muted" style="margin-left:8px;">
-      <input id="upcomingOnly" type="checkbox" checked />
-      <small>Upcoming only</small>
-    </label>
-    <div class="muted" id="count" style="margin-left:auto"></div>
-  </section>
-
-  <div class="grid" id="list"></div>
-
-  <script>
-    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-    function highlight(text, q){
-      if(!q) return text;
-      const re = new RegExp('(' + escRe(q) + ')', 'ig');
-      return text.replace(re, '<mark>$1</mark>');
+{
+  "generated": "2025-11-14T12:00:00Z",
+  "events": [
+    {
+      "id": "demo-1",
+      "title": "Holiday Bubbles — Champagne vs. Cava",
+      "start": "2025-12-05T18:30:00-05:00",
+      "end": null,
+      "venue_name": "Commonwealth Wine School",
+      "address": "35 Dunster St, Cambridge, MA 02138",
+      "neighborhood": "Harvard Square",
+      "price_min": 55,
+      "price_max": 95,
+      "organizer": "Commonwealth Wine School",
+      "tags": ["tasting","sparkling","holiday"],
+      "ticket_url": "https://example.com/cws-bubbles",
+      "source_url": "https://example.com/cws-bubbles",
+      "last_seen": "2025-11-14",
+      "status": "scheduled",
+      "lat": 42.372,
+      "lon": -71.119,
+      "city": "Cambridge",
+      "state": "MA",
+      "postal_code": "02138"
+    },
+    {
+      "id": "demo-2",
+      "title": "Intro to Burgundy Class",
+      "start": "2025-12-12T19:00:00-05:00",
+      "end": "2025-12-12T21:00:00-05:00",
+      "venue_name": "Back Bay Wine School",
+      "address": "800 Boylston St, Boston, MA 02199",
+      "neighborhood": "Back Bay",
+      "price_min": 45,
+      "price_max": 75,
+      "organizer": "Back Bay Wine School",
+      "tags": ["class","burgundy","education"],
+      "ticket_url": "https://example.com/burgundy-class",
+      "source_url": "https://example.com/burgundy-class",
+      "last_seen": "2025-11-14",
+      "status": "scheduled",
+      "lat": 42.347,
+      "lon": -71.082,
+      "city": "Boston",
+      "state": "MA",
+      "postal_code": "02199"
     }
-    function toMillis(s){ const d = new Date(s); const t = d.getTime(); return isNaN(t) ? null : t; }
-
-    async function load() {
-      const res = await fetch('events.json', { cache: 'no-store' });
-      const data = await res.json();
-      document.querySelector('#meta').textContent =
-        `Updated ${new Date(data.generated).toLocaleString()}. ${data.events.length} events total.`;
-      // sort ascending by start
-      window.ALL = (data.events || []).slice().sort((a,b) => (toMillis(a.start)||0) - (toMillis(b.start)||0));
-      render();
-    }
-
-    function within(d, from, to){
-      const t = toMillis(d);
-      if (t == null) return false;
-      if (from && t < from) return false;
-      if (to && t > to) return false;
-      return true;
-    }
-
-    function render(){
-      const q = document.querySelector('#q').value.trim();
-      const ql = q.toLowerCase();
-      const from = document.querySelector('#from').value ? new Date(document.querySelector('#from').value).getTime() : null;
-      const to   = document.querySelector('#to').value   ? new Date(document.querySelector('#to').value+'T23:59:59').getTime() : null;
-      const neigh = document.querySelector('#neighborhood').value.toLowerCase();
-      const type  = document.querySelector('#type').value.toLowerCase();
-      const upcomingOnly = document.querySelector('#upcomingOnly').checked;
-      const now = Date.now();
-
-      const filtered = (window.ALL || []).filter(e => {
-        const t = toMillis(e.start);
-        if (upcomingOnly && t !== null && t < now) return false;
-
-        const hay = [e.title, e.venue_name, (e.tags||[]).join(','), e.neighborhood||'', e.city||'']
-          .join(' ').toLowerCase();
-        const okQ = !ql || hay.includes(ql);
-        const okN = !neigh || (e.neighborhood||'').toLowerCase() === neigh;
-        const okT = !type || (e.tags||[]).some(t => t.toLowerCase() === type);
-        const okD = !e.start ? false : within(e.start, from, to);
-        return okQ && okN && okT && okD;
-      });
-
-      // update count
-      document.querySelector('#count').textContent = `${filtered.length} shown`;
-
-      const list = document.querySelector('#list');
-      list.innerHTML = filtered.map(e => {
-        const when = e.start ? new Date(e.start).toLocaleString() : '';
-        const title = q ? highlight(e.title || '', q) : (e.title || '');
-        const venue = q ? highlight(e.venue_name || '', q) : (e.venue_name || '');
-        const tags  = (e.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
-        const price =
-          e.price_min || e.price_max
-            ? `<div class="muted">$${e.price_min || ''}${e.price_max && e.price_max != e.price_min ? '–$' + e.price_max : ''}</div>`
-            : '';
-        const link = e.ticket_url
-          ? `<a href="${e.ticket_url}" target="_blank" rel="noopener">Tickets/details</a>`
-          : '';
-        return `
-          <article class="card">
-            <div class="muted">${when}</div>
-            <h3 style="margin:6px 0 0">${title}</h3>
-            <div>${venue}${e.neighborhood ? ' — ' + e.neighborhood : ''}</div>
-            ${price}
-            <div style="margin-top:6px;">${tags}</div>
-            <div style="margin-top:8px;">${link}</div>
-          </article>
-        `;
-      }).join('');
-    }
-
-    ['q','from','to','neighborhood','type','upcomingOnly'].forEach(id => {
-      document.querySelector('#'+id).addEventListener('input', render);
-      document.querySelector('#'+id).addEventListener('change', render);
-    });
-
-    load();
-  </script>
-</body>
-</html>
+  ]
+}
