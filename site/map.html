@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Boston Wine Events — Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    html, body, #map { height: 100%; margin: 0 }
+    .legend {
+      position: absolute; top: 10px; left: 10px;
+      background: #fff; padding: 8px 10px; border-radius: 8px;
+      border: 1px solid #ddd; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    }
+    .nav {
+      position: absolute; top: 10px; right: 10px; background:#fff; padding:8px 10px; border-radius:8px; border:1px solid #ddd;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+    .nav a { margin-left: 8px; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div class="legend">Pins show events that have <strong>lat/lon</strong> in <code>data/events.csv</code>.</div>
+  <div class="nav">
+    <a href="index.html">List</a>
+    <a href="rss.xml">RSS</a>
+    <a href="events.ics">ICS</a>
+    <a href="submit.html">Submit</a>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([42.3601, -71.0589], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    fetch('events.json', { cache: 'no-store' })
+      .then(r => r.json())
+      .then(data => {
+        const markers = [];
+        for (const e of (data.events || [])) {
+          if (typeof e.lat === 'number' && typeof e.lon === 'number') {
+            const m = L.marker([e.lat, e.lon]).addTo(map);
+            const when = e.start ? new Date(e.start).toLocaleString() : '';
+            const url = e.ticket_url ? `<br><a target="_blank" rel="noopener" href="${e.ticket_url}">Tickets/details</a>` : '';
+            m.bindPopup(`<strong>${e.title || '(untitled)'}</strong><br>${when}<br>${e.venue_name || ''}${e.neighborhood ? ' — ' + e.neighborhood : ''}${url}`);
+            markers.push(m);
+          }
+        }
+        if (markers.length) {
+          const group = L.featureGroup(markers);
+          map.fitBounds(group.getBounds().pad(0.2));
+        }
+      });
+  </script>
+</body>
+</html>
