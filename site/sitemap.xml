@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- main listing page -->
+  <url>
+    <loc>https://YOUR-SITE-URL/index.html</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- alternate views -->
+  <url>
+    <loc>https://YOUR-SITE-URL/map.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://YOUR-SITE-URL/submit.html</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- data feeds -->
+  <url>
+    <loc>https://YOUR-SITE-URL/rss.xml</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://YOUR-SITE-URL/events.ics</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://YOUR-SITE-URL/events.json</loc>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- optional root redirect -->
+  <url>
+    <loc>https://YOUR-SITE-URL/</loc>
+    <priority>1.0</priority>
+  </url>
+</urlset>
