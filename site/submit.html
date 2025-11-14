@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Submit a Wine Event</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; max-width: 760px }
+    input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px }
+    label { display: block; margin: 14px 0 6px }
+    button { padding: 10px 14px; border-radius: 10px; border: 1px solid #333; background: #111; color: #fff; cursor: pointer }
+    .muted { color: #555 }
+    header a { margin-right: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 style="margin-bottom:4px">Submit a Wine Event</h1>
+    <div class="muted" style="margin-bottom:16px">
+      <a href="index.html">List</a>
+      <a href="map.html">Map</a>
+      <a href="rss.xml">RSS</a>
+      <a href="events.ics">ICS</a>
+    </div>
+  </header>
+
+  <p class="muted">Fill in the basics and we’ll verify it. You can also email us: <a href="mailto:events@example.org">events@example.org</a>.</p>
+
+  <!-- Replace action with your Formspree/Netlify endpoint -->
+  <form action="https://formspree.io/f/your-form-id" method="POST">
+    <label>Event title</label>
+    <input name="title" required>
+
+    <label>Date & time (local)</label>
+    <input name="start" placeholder="YYYY-MM-DDTHH:MM:SS-05:00" required>
+
+    <label>Venue name</label>
+    <input name="venue_name" required>
+
+    <label>Address</label>
+    <input name="address" placeholder="Street, City, State">
+
+    <label>Neighborhood</label>
+    <input name="neighborhood" placeholder="e.g. Harvard Square, North End, Seaport">
+
+    <label>Tags (comma-separated)</label>
+    <input name="tags" placeholder="tasting, class, dinner">
+
+    <label>Ticket/Details URL</label>
+    <input name="ticket_url" placeholder="https://…">
+
+    <label>Notes</label>
+    <textarea name="notes" rows="4"></textarea>
+
+    <div style="margin-top:14px;"><button type="submit">Submit</button></div>
+  </form>
+
+  <hr style="margin:24px 0">
+
+  <details>
+    <summary><strong>How submissions get into the site</strong></summary>
+    <p class="muted">
+      Easiest flow: submissions go to your inbox or a Google Sheet; you copy approved ones into <code>data/events.csv</code>
+      (or a small admin script can append them for you). The next run of <code>scripts/run_all.py</code> will normalize and publish.
+    </p>
+  </details>
+</body>
+</html>
