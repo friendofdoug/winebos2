@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://friendofdoug.github.io/winebos2/sitemap.xml
