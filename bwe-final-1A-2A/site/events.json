@@ -1,0 +1,57 @@
+{
+  "generated": "2025-11-14T17:08:46.234179Z",
+  "events": [
+    {
+      "id": "ex-001",
+      "title": "Holiday Bubbles Tasting",
+      "start": "2025-12-05T18:00:00-05:00",
+      "end": null,
+      "venue_name": "North End Wine Merchants",
+      "address": "215 Hanover St, Boston, MA",
+      "neighborhood": "North End",
+      "price_min": 0.0,
+      "price_max": 30.0,
+      "organizer": "North End Wine Merchants",
+      "tags": [
+        "tasting",
+        "sparkling",
+        "holiday"
+      ],
+      "ticket_url": "https://example.com/tickets/holiday-bubbles",
+      "source_url": "https://example.com/events/holiday-bubbles",
+      "last_seen": "2025-10-27",
+      "status": "scheduled",
+      "lat": 42.364,
+      "lon": -71.054,
+      "city": "Boston",
+      "state": "MA",
+      "postal_code": "02113"
+    },
+    {
+      "id": "ex-002",
+      "title": "Intro to Burgundy Class",
+      "start": "2025-12-12T19:00:00-05:00",
+      "end": "2025-12-12T21:00:00-05:00",
+      "venue_name": "Back Bay Wine School",
+      "address": "800 Boylston St, Boston, MA",
+      "neighborhood": "Back Bay",
+      "price_min": 45.0,
+      "price_max": 75.0,
+      "organizer": "Back Bay Wine School",
+      "tags": [
+        "class",
+        "burgundy",
+        "education"
+      ],
+      "ticket_url": "https://example.com/tickets/burgundy-class",
+      "source_url": "https://example.com/events/burgundy-class",
+      "last_seen": "2025-10-27",
+      "status": "scheduled",
+      "lat": 42.347,
+      "lon": -71.082,
+      "city": "Boston",
+      "state": "MA",
+      "postal_code": "02199"
+    }
+  ]
+}

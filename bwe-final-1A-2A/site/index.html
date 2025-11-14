@@ -1,0 +1,1 @@
+<!doctype html><meta charset='utf-8'><title>Boston Wine Events</title><link rel='stylesheet' href='styles.css'><h1>Boston Wine Events</h1><div id='meta'></div><script>fetch('events.json').then(r=>r.json()).then(d=>{document.querySelector('#meta').textContent = 'Updated '+new Date(d.generated).toLocaleString()+'. '+d.events.length+' events.'})</script>
