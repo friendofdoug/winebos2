@@ -17,7 +17,7 @@ jobs:
           pip install python-dateutil icalendar requests
       - name: Run pipeline
         env:
-          EB_TOKEN: ${{57NYQDUA22N5Z3D4SN4C}}
+          EB_TOKEN: ${{ secrets.EB_TOKEN }}
           SITE_URL: ${{https://friendofdoug.github.io/winebos2}}
           SITE_TITLE: ${{WineBOS}}
         run: |
